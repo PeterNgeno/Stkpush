@@ -13,6 +13,7 @@ const passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2c2cb45bdbcf1033c6d58d28ef42d5e
 
 // Root Endpoint
 app.get('/', (req, res) => {
+    console.log('Root endpoint accessed');
     res.send('Welcome to the STK Push Application!');
 });
 
