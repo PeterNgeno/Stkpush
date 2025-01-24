@@ -3,9 +3,13 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
+
+// Serve static files (like index.html) from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Use environment variables for credentials
 const consumerKey = process.env.CONSUMER_KEY;
@@ -14,14 +18,13 @@ const shortcode = process.env.SHORTCODE;
 const passkey = process.env.PASSKEY;
 const callbackURL = process.env.CALLBACK_URL; // Get the callback URL from .env
 
-// Add a route for the root path
+// Add a route for the root path to serve the index.html
 app.get('/', (req, res) => {
-    res.send('Server is running!');  // Message to show when visiting root path
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/stkpush', async (req, res) => {
-    const { phone } = req.body;
-    const amount = 1; // Set the amount to charge
+    const { phone, amount } = req.body;
 
     try {
         // Get the access token
@@ -44,7 +47,7 @@ app.post('/stkpush', async (req, res) => {
                 Password: password,
                 Timestamp: timestamp,
                 TransactionType: 'CustomerPayBillOnline',
-                Amount: amount,
+                Amount: parseInt(amount),
                 PartyA: phone,
                 PartyB: shortcode,
                 PhoneNumber: phone,
