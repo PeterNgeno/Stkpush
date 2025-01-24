@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -5,10 +7,12 @@ const axios = require('axios');
 const app = express();
 app.use(bodyParser.json());
 
-const consumerKey = 'mrxhEccpfHHYyNbVktAHOxw3KYdhTRmylgJtfgUQ14JOda1F';
-const consumerSecret = 'Uv3d4hWdtC3C11qbVyiTk2gITeHc2MlXpBVXEGTEtZpZtqjHcTqXhfk8A5hsG2iC';
-const shortcode = '174379'; // Default shortcode
-const passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2c2cb45bdbcf1033c6d58d28ef42d5e5';
+// Use environment variables for credentials
+const consumerKey = process.env.CONSUMER_KEY;
+const consumerSecret = process.env.CONSUMER_SECRET;
+const shortcode = process.env.SHORTCODE;
+const passkey = process.env.PASSKEY;
+const callbackURL = process.env.CALLBACK_URL; // Get the callback URL from .env
 
 // Add a route for the root path
 app.get('/', (req, res) => {
@@ -44,7 +48,7 @@ app.post('/stkpush', async (req, res) => {
                 PartyA: phone,
                 PartyB: shortcode,
                 PhoneNumber: phone,
-                CallBackURL: 'https://your-callback-url.com', // Replace with your callback URL
+                CallBackURL: callbackURL, // Use the callback URL from the .env file
                 AccountReference: 'TestPayment',
                 TransactionDesc: 'Payment of goods',
             },
