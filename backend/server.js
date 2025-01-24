@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables
+ require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Serve static files (like index.html) from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public'))); // Going up one level to access 'public'
 
 // Use environment variables for credentials
 const consumerKey = process.env.CONSUMER_KEY;
@@ -20,7 +20,7 @@ const callbackURL = process.env.CALLBACK_URL; // Get the callback URL from .env
 
 // Add a route for the root path to serve the index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html')); // Correct path to 'index.html'
 });
 
 app.post('/stkpush', async (req, res) => {
